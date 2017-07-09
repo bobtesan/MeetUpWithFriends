@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.intern05.meetup.Activities.EventCreateActivity"
+    android:background="@color/backgroundColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <com.example.intern05.meetup.Customs.customTextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:paddingTop="8dp"
+            android:text="Invite Friends"
+            android:textColor="#fff"
+            android:textAlignment="textEnd"
+            android:textSize="30sp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            app:pressedTranslationZ="12dp"
+            app:srcCompat="@drawable/ic_add_white_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/line_shape"
+            android:orientation="horizontal"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <com.example.intern05.meetup.Customs.customTextView
+                android:id="@+id/textView18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event name:"
+                android:layout_marginLeft="3dp"
+                android:textSize="13sp"
+                android:textColor="@color/colorAccent"/>
+
+            <EditText
+                android:id="@+id/event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Enter event name"
+                android:inputType="textImeMultiLine|textPersonName"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <com.example.intern05.meetup.Customs.customTextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event date:"
+            android:layout_marginLeft="3dp"
+            android:textSize="13sp"
+            android:textColor="@color/colorAccent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/dateText2"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.42"
+                android:hint="Date"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/calendarB"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="9dp"
+                android:background="@mipmap/calendar"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <com.example.intern05.meetup.Customs.customTextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start time:"
+            android:layout_marginLeft="3dp"
+            android:textSize="13sp"
+            android:textColor="@color/colorAccent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/timeStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Start Time"
+                android:inputType="textPersonName"
+                android:textColor="#ffff"
+                android:textColorHint="#ffff"
+
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <com.example.intern05.meetup.Customs.customTextView
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address:"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="13sp"
+            android:textColor="@color/colorAccent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Location"
+                android:layout_marginLeft="5dp"
+                android:textColor="#fff"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="29dp"
+                android:background="@drawable/circle_shape"
+                android:text="Create Event"
+                android:textColor="@color/backgroundColor" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "605239529074",
+    "firebase_url": "https://meetup-27762.firebaseio.com",
+    "project_id": "meetup-27762",
+    "storage_bucket": "meetup-27762.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605239529074:android:14575f8fd812150f",
+        "android_client_info": {
+          "package_name": "com.example.intern05.meetup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605239529074-7dj1vv0r36l07jb0162a81648mmratab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.intern05.meetup",
+            "certificate_hash": "b69f9fe5caa20e0cd4c8c6b82f9e7180cc59ee92"
+          }
+        },
+        {
+          "client_id": "605239529074-9rbghfs9bhvdg5klqhnkka478icufhla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.intern05.meetup",
+            "certificate_hash": "2a6da8d6020fed534dece6e0a2aeb413ae1dd1d6"
+          }
+        },
+        {
+          "client_id": "605239529074-e6lprf267nfp6ebvq9q5r8skbn6vqrrn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.intern05.meetup",
+            "certificate_hash": "f7e0fdd04990f3adfb4b4af37cfb925cc221fb26"
+          }
+        },
+        {
+          "client_id": "605239529074-lr6ns9n7q0ikbcvo1raoqqgkv9149lpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLCO9jpTFFqgk34qCDbMNaDrtL7azPzMM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605239529074-lr6ns9n7q0ikbcvo1raoqqgkv9149lpp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

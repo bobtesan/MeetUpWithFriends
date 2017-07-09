@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/events_screen"
+            android:icon="@mipmap/ic_event"
+            android:title="@string/events_screen" />
+        <item
+            android:id="@+id/incoming_invites"
+            android:icon="@mipmap/incoming_invites_icon"
+            android:title="@string/incoming_invites" />
+        <item
+            android:id="@+id/events_history"
+            android:icon="@mipmap/history_icon"
+            android:title="@string/events_history" />
+
+
+
+    </group>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/terms_conditions"
+                android:title="@string/terms_conditions" />
+
+            <item
+                android:id="@+id/about_app"
+                android:title="@string/about_app" />
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/log_out"
+        android:icon="@mipmap/ic_log_out"
+        android:title="@string/log_out" />
+    </group>
+
+
+
+
+</menu>
