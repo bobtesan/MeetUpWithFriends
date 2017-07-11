@@ -1,7 +1,6 @@
 package com.example.intern05.meetup.Models;
 
-import java.text.DateFormat;
-import java.util.Date;
+
 
 /**
  * Created by intern05 on 15.05.2017.

@@ -4,29 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.intern05.meetup.Activities.EventDetails;
 import com.example.intern05.meetup.Activities.LocationActivity;
-import com.example.intern05.meetup.Activities.MapsActivity;
-import com.example.intern05.meetup.Models.Events;
 import com.example.intern05.meetup.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by intern05 on 25.05.2017.

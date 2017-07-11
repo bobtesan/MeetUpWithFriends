@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,14 +20,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.support.annotation.RequiresApi;
 import android.widget.EditText;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,8 +36,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.intern05.meetup.Other.CircleTransform;
 import com.example.intern05.meetup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -53,16 +48,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.security.Permissions;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.attr.data;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyProfileActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {

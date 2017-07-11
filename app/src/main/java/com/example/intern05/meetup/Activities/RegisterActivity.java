@@ -18,12 +18,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
-        email = (EditText) findViewById(R.id.email);
+        email = (EditText) findViewById(R.id.emailR);
         pwd = (EditText) findViewById(R.id.pwd);
         username = (EditText) findViewById(R.id.userName);
 

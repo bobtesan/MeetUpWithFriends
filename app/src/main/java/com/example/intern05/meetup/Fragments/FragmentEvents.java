@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.intern05.meetup.Activities.EventCreateActivity;
 import com.example.intern05.meetup.Activities.EventDetails;
 import com.example.intern05.meetup.Activities.MapsActivity;
 import com.example.intern05.meetup.Adapters.MyAdapter;
@@ -40,7 +38,7 @@ public class FragmentEvents extends Fragment implements MyAdapter.EventItemSelec
     public static final String KEY_EVENT_NAME = "event_name";
     private View rootView;
 
-    DatabaseReference root;
+    private DatabaseReference root;
     private List<Events> eventsList = new ArrayList<>();
 
     private RecyclerView recyclerView;

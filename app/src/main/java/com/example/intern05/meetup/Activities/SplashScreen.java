@@ -7,21 +7,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.example.intern05.meetup.R;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
 
     private TextView tv;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    /*private */
 
     private static int SPLASH_TIME_OUT = 2000;
 

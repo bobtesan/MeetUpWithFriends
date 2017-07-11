@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,7 +133,7 @@ public class SlideBarActivity extends AppCompatActivity {
     }
 
     //LogOut
-    FirebaseAuth auth=FirebaseAuth.getInstance();
+    private FirebaseAuth auth=FirebaseAuth.getInstance();
 
     private void loadNavHeader() {
         root2 = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
@@ -346,7 +345,6 @@ public class SlideBarActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
 
         if (navItemIndex >= 0) {
             getMenuInflater().inflate(R.menu.my_profile_menu, menu);
