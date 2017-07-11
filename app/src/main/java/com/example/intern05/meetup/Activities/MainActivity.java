@@ -1,10 +1,15 @@
 package com.example.intern05.meetup.Activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -60,28 +65,41 @@ public class MainActivity extends AppCompatActivity {
         loginB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String emaill = email.getText().toString().trim();
-                String pass = password.getText().toString();
-                if (TextUtils.isEmpty(emaill) && TextUtils.isEmpty(pass)) {
-                    Toast.makeText(MainActivity.this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
-                } else {
-                    pb.setVisibility(View.VISIBLE);
-                    mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                if(isNetworkAvailable()) {
+                    String emaill = email.getText().toString().trim();
+                    String pass = password.getText().toString();
+                    if (TextUtils.isEmpty(emaill) && TextUtils.isEmpty(pass)) {
+                        Toast.makeText(MainActivity.this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
+                    } else {
+                        pb.setVisibility(View.VISIBLE);
+                        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
-                                pb.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(MainActivity.this, SlideBarActivity.class);
-                                startActivity(i);
-                                finish();
-                            } else {
-                                Toast.makeText(MainActivity.this, "Connection error", Toast.LENGTH_SHORT).show();
-                                pb.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    pb.setVisibility(View.GONE);
+                                    Toast.makeText(MainActivity.this, "Logged in", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(MainActivity.this, SlideBarActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Connection error", Toast.LENGTH_SHORT).show();
+                                    pb.setVisibility(View.GONE);
+                                }
                             }
+                        });
+                    }
+                }
+                else{
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                    alertDialogBuilder.setMessage("You don't have internet connection. Please connect to the internet.");
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
                         }
                     });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             }
         });
@@ -95,5 +113,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

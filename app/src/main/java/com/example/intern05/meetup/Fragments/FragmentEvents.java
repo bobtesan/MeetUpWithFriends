@@ -104,11 +104,11 @@ public class FragmentEvents extends Fragment implements MyAdapter.EventItemSelec
                 }
             }
         });
-        prepareEventData();
+        getEventList();
 
     }
 
-    private void prepareEventData() {
+    private void getEventList() {
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
