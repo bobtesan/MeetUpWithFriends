@@ -1,10 +1,15 @@
 package com.example.intern05.meetup.Fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,14 +82,26 @@ public class FragmentEvents extends Fragment implements MyAdapter.EventItemSelec
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
 
-
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent i = new Intent(getActivity(), EventCreateActivity.class);
-                Intent i = new Intent(getActivity(), MapsActivity.class);
-                startActivity(i);
+                if(isNetworkAvailable()) {
+                    Intent i = new Intent(getActivity(), MapsActivity.class);
+                    startActivity(i);
+                }
+                else{
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    alertDialogBuilder.setMessage("You don't have internet connection. Please connect to the internet.");
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
             }
         });
         prepareEventData();
@@ -132,6 +149,11 @@ public class FragmentEvents extends Fragment implements MyAdapter.EventItemSelec
         Intent i = new Intent(getActivity(), EventDetails.class);
         i.putExtra(KEY_EVENT_NAME, event.getTitle());
         startActivity(i);
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 

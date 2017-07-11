@@ -1,8 +1,13 @@
 package com.example.intern05.meetup.Fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,17 +110,31 @@ public class FragmentChat extends Fragment  {
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(message.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(),"Please write something",Toast.LENGTH_SHORT).show();
+                if(isNetworkAvailable()) {
+
+                    if (message.getText().toString().equals("")) {
+                        Toast.makeText(getActivity(), "Please write something", Toast.LENGTH_SHORT).show();
+                    } else {
+                        temp_key = root.push().getKey();
+                        DatabaseReference message_root = root.child(temp_key);
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("Username", username);
+                        map.put("MSG", message.getText().toString());
+                        message_root.updateChildren(map);
+                        message.setText("");
+                    }
                 }
                 else{
-                    temp_key = root.push().getKey();
-                    DatabaseReference message_root = root.child(temp_key);
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("Username", username);
-                    map.put("MSG", message.getText().toString());
-                    message_root.updateChildren(map);
-                    message.setText("");
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    alertDialogBuilder.setMessage("You don't have internet connection. Please connect to the internet.");
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            getActivity().finish();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             }
         });
@@ -156,6 +175,11 @@ public class FragmentChat extends Fragment  {
             chat_user=(String)((DataSnapshot)i.next()).getValue();
             conversation.append(chat_user+": "+chat_msg+"\n");
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

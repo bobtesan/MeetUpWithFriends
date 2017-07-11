@@ -1,14 +1,19 @@
 package com.example.intern05.meetup.Activities;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -46,14 +51,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         saveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (latitude == 0 && longitude == 0) {
-                    Toast.makeText(MapsActivity.this, "Please place a marker on the map!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent i = new Intent(MapsActivity.this, EventCreateActivity.class);
-                    i.putExtra(MapsActivity.KEY_EVENT_ADDRESS, getEventAddress());
-                    i.putExtra(MapsActivity.KEY_EVENT_LATITUDE, String.valueOf(getLatitude()));
-                    i.putExtra(MapsActivity.KEY_EVENT_LONGITUDE, String.valueOf(getLongitude()));
-                    startActivity(i);
+                if(isNetworkAvailable()) {
+                    if (latitude == 0 && longitude == 0) {
+                        Toast.makeText(MapsActivity.this, "Please place a marker on the map!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent i = new Intent(MapsActivity.this, EventCreateActivity.class);
+                        i.putExtra(MapsActivity.KEY_EVENT_ADDRESS, getEventAddress());
+                        i.putExtra(MapsActivity.KEY_EVENT_LATITUDE, String.valueOf(getLatitude()));
+                        i.putExtra(MapsActivity.KEY_EVENT_LONGITUDE, String.valueOf(getLongitude()));
+                        startActivity(i);
+                    }
+                }
+                else{
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+                    alertDialogBuilder.setMessage("You don't have internet connection. Please connect to the internet.");
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             }
         });
@@ -122,5 +140,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public String getEventAddress() {
         return eventAddress;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

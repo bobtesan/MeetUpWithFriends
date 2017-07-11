@@ -3,11 +3,16 @@ package com.example.intern05.meetup.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +32,7 @@ import java.util.Map;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class EventCreateActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private  FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = db.getReference().child("Events");
     private DatabaseReference myRef2 = db.getReference().child("Events");
     private DatabaseReference myRef3 = db.getReference().child("Events");
@@ -54,17 +59,17 @@ public class EventCreateActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_create);
 
-        Intent i=getIntent();
+        Intent i = getIntent();
 
-        eventAddress=i.getStringExtra(MapsActivity.KEY_EVENT_ADDRESS);
-        eventAddressLatitude=i.getStringExtra(MapsActivity.KEY_EVENT_LATITUDE);
-        eventAddressLongitude=i.getStringExtra(MapsActivity.KEY_EVENT_LONGITUDE);
+        eventAddress = i.getStringExtra(MapsActivity.KEY_EVENT_ADDRESS);
+        eventAddressLatitude = i.getStringExtra(MapsActivity.KEY_EVENT_LATITUDE);
+        eventAddressLongitude = i.getStringExtra(MapsActivity.KEY_EVENT_LONGITUDE);
 
         eventName = (EditText) findViewById(R.id.event_name);
         dateText = (EditText) findViewById(R.id.dateText2);
         calendarB = (Button) findViewById(R.id.calendarB);
         timeStart = (EditText) findViewById(R.id.timeStart);
-        location=(TextView)findViewById(R.id.textView6);
+        location = (TextView) findViewById(R.id.textView6);
 
         location.setText(eventAddress);
         dateText.setShowSoftInputOnFocus(false);
@@ -74,38 +79,50 @@ public class EventCreateActivity extends AppCompatActivity implements DatePicker
         createEventB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (eventName.getText().toString().isEmpty() || dateText.getText().toString().isEmpty() || timeStart.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Fields cannot be empty.", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        MapsActivity ma=new MapsActivity();
-                        myRef = db.getReference("Events").child(eventName.getText().toString()); //child(temp_key.toString()).
-                        Map<String, Object> map2 = new HashMap<String, Object>();
-                        map2.put("EventDate", dateText.getText().toString());
-                        map2.put("StartTime", timeStart.getText().toString());
-                        map2.put("Location", "");
-                        map2.put("Chat", "");
-                        myRef.updateChildren(map2);
+                if (isNetworkAvailable()) {
+                    if (eventName.getText().toString().isEmpty() || dateText.getText().toString().isEmpty() || timeStart.getText().toString().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Fields cannot be empty.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            MapsActivity ma = new MapsActivity();
+                            myRef = db.getReference("Events").child(eventName.getText().toString()); //child(temp_key.toString()).
+                            Map<String, Object> map2 = new HashMap<String, Object>();
+                            map2.put("EventDate", dateText.getText().toString());
+                            map2.put("StartTime", timeStart.getText().toString());
+                            map2.put("Location", "");
+                            map2.put("Chat", "");
+                            myRef.updateChildren(map2);
 
-                        myRef2 = db.getReference("Events").child(eventName.getText().toString()).child("Location").child("Latitude");
-                        myRef2.setValue(String.valueOf(eventAddressLatitude));
-                        myRef3 = db.getReference("Events").child(eventName.getText().toString()).child("Location").child("Longitude");
-                        myRef3.setValue(String.valueOf(eventAddressLongitude));
+                            myRef2 = db.getReference("Events").child(eventName.getText().toString()).child("Location").child("Latitude");
+                            myRef2.setValue(String.valueOf(eventAddressLatitude));
+                            myRef3 = db.getReference("Events").child(eventName.getText().toString()).child("Location").child("Longitude");
+                            myRef3.setValue(String.valueOf(eventAddressLongitude));
 
-                        Toast.makeText(getApplicationContext(), "Event created successfully.", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(EventCreateActivity.this, SlideBarActivity.class);
-                        startActivity(i);
-                        finish();
-                    } catch (Exception ex) {
-                        Toast.makeText(getApplicationContext(), "Oops. There is an error.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Event created successfully.", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(EventCreateActivity.this, SlideBarActivity.class);
+                            startActivity(i);
+                            finish();
+                        } catch (Exception ex) {
+                            Toast.makeText(getApplicationContext(), "Oops. There is an error.", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EventCreateActivity.this);
+                    alertDialogBuilder.setMessage("You don't have internet connection. Please connect to the internet.");
+                    alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
 
 
             }
         });
         //dateText.setEnabled(false);
-       calendarB.setOnClickListener(new View.OnClickListener() {
+        calendarB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(0);
@@ -153,4 +170,11 @@ public class EventCreateActivity extends AppCompatActivity implements DatePicker
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }
