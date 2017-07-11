@@ -18,14 +18,14 @@
             android:layout_height="20dp"
             android:layout_weight="1" />
 
-        <TextView
+        <com.example.intern05.meetup.Customs.customTextView
             android:id="@+id/textView17"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="My Profile"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="#fff"/>
 
         <Space
@@ -48,15 +48,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
+        <com.example.intern05.meetup.Customs.customTextView
             android:id="@+id/tvGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender"
-            android:textColor="#fff"
-            android:textSize="20sp"
+            android:text="Gender:"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
             android:layout_marginLeft="5dp"/>
 
         <Space
@@ -92,17 +92,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
+        <com.example.intern05.meetup.Customs.customTextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Date of Birth:"
+            android:text="Date of birth:"
             android:layout_marginLeft="5dp"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/dateBirth"
@@ -110,10 +110,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:hint="Select Date of Birth"
-            android:textSize="25sp"
+            android:hint="Select date of birth"
+            android:textSize="18sp"
             android:textColorHint="#fff"
-            android:textColor="#fff"/>
+            android:textColor="#fff"
+            android:layout_marginLeft="3dp"/>
     </LinearLayout>
 
     <LinearLayout

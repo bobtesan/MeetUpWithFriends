@@ -1,6 +1,7 @@
 package com.example.intern05.meetup.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +44,8 @@ public class SlideBarActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String userID;
     private String username;
+    private Uri imageUri;
+    private FirebaseAuth mAuth=FirebaseAuth.getInstance();
 
     private static final String urlProfileImg = "https://www.wnmlive.com/images/Default-Profile.jpg";
 
@@ -57,7 +61,9 @@ public class SlideBarActivity extends AppCompatActivity {
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
 
-    DatabaseReference root= FirebaseDatabase.getInstance().getReference("Users");
+    private DatabaseReference root= FirebaseDatabase.getInstance().getReference("Users");
+    DatabaseReference root2= FirebaseDatabase.getInstance().getReference("Users");
+    private String uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,16 +137,40 @@ public class SlideBarActivity extends AppCompatActivity {
     FirebaseAuth auth=FirebaseAuth.getInstance();
 
     private void loadNavHeader() {
+        root2 = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+        root2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                uri=dataSnapshot.child("ImageUri").getValue(String.class);
+                if(uri.equals("null")){
+                    Glide.with(getApplicationContext())
+                            .load(urlProfileImg)
+                            .crossFade()
+                            .override(300,300)
+                            .thumbnail(0.5f)
+                            .bitmapTransform(new CircleTransform(getApplicationContext()))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgProfile);
+                }
+                else {
+                    imageUri = Uri.parse(uri);
 
+                    Glide.with(getApplicationContext())
+                            .load(imageUri)
+                            .crossFade()
+                            .override(300, 300)
+                            .thumbnail(0.5f)
+                            .bitmapTransform(new CircleTransform(getApplicationContext()))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgProfile);
+                }
+            }
 
-        // Loading profile image
-        Glide.with(this)
-                .load(urlProfileImg)
-                .crossFade()
-                .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(this))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfile);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
@@ -149,16 +179,11 @@ public class SlideBarActivity extends AppCompatActivity {
     private void loadHomeFragment() {
 
         selectNavMenu();
-
-
         setToolbarTitle();
-
-
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
             return;
         }
-
 
         Runnable mPendingRunnable = new Runnable() {
             @Override

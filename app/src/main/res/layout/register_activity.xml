@@ -79,7 +79,7 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:hint="email"
-            android:inputType="textPersonName|textWebEmailAddress"
+            android:inputType="textEmailAddress"
             android:textAlignment="center"
             android:textColor="#ffff"
             android:textColorHint="#ffff"

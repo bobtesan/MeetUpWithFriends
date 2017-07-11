@@ -59,6 +59,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.security.Permissions;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.R.attr.data;
 
@@ -70,32 +72,39 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
     private CheckBox chMale,chFemale;
     private Button saveB,changePwdB;
     private AlertDialog.Builder alertDialog;
-    private String username;
-    private String userID;
+  //  private String username;
+   // private String userID;
     private TextView txtName;
     private Activity activity;
     private StorageReference mStorageRef;
     private Uri imageUri;
-
+    private FirebaseAuth mAuth=FirebaseAuth.getInstance();
     private int Request_File_Write_Permission=1003;
     private int Request_File_Read_Permission=1002;
     private static final int Get_From_Gallery=2;
+    private String uri="";
+    private String birthdate="";
+    private String gender="";
 
-    DatabaseReference root= FirebaseDatabase.getInstance().getReference("Users");
+    private DatabaseReference root= FirebaseDatabase.getInstance().getReference("Users");
+    private DatabaseReference root2= FirebaseDatabase.getInstance().getReference("Users");
+    private DatabaseReference root3= FirebaseDatabase.getInstance().getReference("Users");
 
     private static final String urlProfileImg = "https://www.wnmlive.com/images/Default-Profile.jpg";
 
-    int day, year, month;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    FirebaseAuth auth=FirebaseAuth.getInstance();
+    private int day, year, month;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseAuth auth=FirebaseAuth.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
-
         activity = this;
+        getProfileImage();
+        getProfileData();
+        getProfileBirthdate();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -169,9 +178,9 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
-        userID=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+      //  userID=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
-        root.addValueEventListener(new ValueEventListener() {
+        /*root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot children : dataSnapshot.getChildren()) {
@@ -191,9 +200,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
-
+        });*/
 
 
         chMale.setOnClickListener(new View.OnClickListener() {
@@ -212,20 +219,27 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
         saveB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //uploadPhoto(imageUri);
+                //uploadPhoto(imageUri);*
+                try {
+
+                    if(dateBirth.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(),"Please select your birthdate",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        setProfileGender();
+                        setProfileBirthDate();
+                        Toast.makeText(getApplicationContext(),"Set",Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch(Exception ex){
+                    Toast.makeText(getApplicationContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         imgProfile=(ImageView)findViewById(R.id.profile_picture);
 
-        Glide.with(this)
-                .load(urlProfileImg)
-                .crossFade()
-                .override(400,400)
-                .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(this))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfile);
+
 
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,9 +261,6 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                 showDialog(0);
             }
         });
-
-
-
     }
 
     Calendar calander = Calendar.getInstance();
@@ -323,18 +334,18 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                 imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                Glide.with(this)
+                Glide.with(getApplicationContext())
                         .load(imageUri)
                         .crossFade()
-                        .override(400,400)
+                        .override(200,200)
                         .thumbnail(0.5f)
                         .bitmapTransform(new CircleTransform(this))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(imgProfile);
+                setProfileImage();
 
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(MyProfileActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyProfileActivity.this, e.toString(), Toast.LENGTH_LONG).show();
             }
 
         }else {
@@ -363,4 +374,117 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                     }
                 });
     }*/
+  public void setProfileImage(){
+          DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+          Map<String, Object> map = new HashMap<>();
+          map.put("ImageUri", imageUri.toString());
+          root.updateChildren(map);
+  }
+  public void getProfileImage(){
+      root = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+      root.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              uri=dataSnapshot.child("ImageUri").getValue(String.class);
+              if(uri.equals("null")){
+                  Glide.with(getApplicationContext())
+                          .load(urlProfileImg)
+                          .crossFade()
+                          .override(200,200)
+                          .thumbnail(0.5f)
+                          .bitmapTransform(new CircleTransform(getApplicationContext()))
+                          .diskCacheStrategy(DiskCacheStrategy.ALL)
+                          .into(imgProfile);
+              }
+              else {
+                  imageUri = Uri.parse(uri);
+
+                  Glide.with(getApplicationContext())
+                          .load(imageUri)
+                          .crossFade()
+                          .override(200, 200)
+                          .thumbnail(0.5f)
+                          .bitmapTransform(new CircleTransform(getApplicationContext()))
+                          .diskCacheStrategy(DiskCacheStrategy.ALL)
+                          .into(imgProfile);
+              }
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+      });
+
+  }
+
+    public void setProfileGender(){
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+        Map<String, Object> map = new HashMap<>();
+        if(chMale.isChecked()){
+            map.put("Gender", "Male");
+            root.updateChildren(map);
+        }
+        else if(chFemale.isChecked()){
+            map.put("Gender", "Female");
+            root.updateChildren(map);
+        }
+        else{
+            map.put("Gender", "null");
+            root.updateChildren(map);
+            Toast.makeText(getApplicationContext(),"Please select your gender",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    public void setProfileBirthDate(){
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+        Map<String, Object> map = new HashMap<>();
+        map.put("BirthDate", dateBirth.getText().toString());
+        root.updateChildren(map);
+    }
+  public void getProfileData(){
+      root2 = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+      root2.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              gender=dataSnapshot.child("Gender").getValue(String.class);
+              if(gender.equals("Male")){
+                  chMale.setChecked(true);
+              }
+              else if(gender.equals("Female")){
+                  chFemale.setChecked(true);
+              }
+              else {
+                  chFemale.setChecked(false);
+                  chMale.setChecked(false);
+              }
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+      });
+  }
+  public void getProfileBirthdate(){
+      root3 = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+      root3.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              birthdate=dataSnapshot.child("BirthDate").getValue(String.class);
+              if(birthdate.equals("")){
+              }
+              else{
+                  dateBirth.setText(birthdate);
+              }
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+      });
+  }
+
 }

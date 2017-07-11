@@ -29,11 +29,13 @@
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
 
-        <TextView
+        <com.example.intern05.meetup.Customs.customTextView
             android:id="@+id/nameUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="Username"
+            android:textSize="15sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>

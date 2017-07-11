@@ -64,7 +64,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         saveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MapsActivity.this, getEventAddress(), Toast.LENGTH_SHORT).show();
                 if (latitude == 0 && longitude == 0) {
                     Toast.makeText(MapsActivity.this, "Please place a marker on the map!", Toast.LENGTH_SHORT).show();
                 } else {

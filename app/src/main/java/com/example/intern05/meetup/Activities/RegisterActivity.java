@@ -71,6 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Username", username.getText().toString());
                                     map.put("Email", email.getText().toString());
+                                    map.put("ImageUri","null");
+                                    map.put("Gender","null");
+                                    map.put("BirthDate","");
                                     root.setValue(map);
 
 

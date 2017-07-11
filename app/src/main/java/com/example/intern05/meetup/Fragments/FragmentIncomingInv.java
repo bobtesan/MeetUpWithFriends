@@ -15,8 +15,7 @@ import com.example.intern05.meetup.R;
  * Created by inter04 on 29.05.2017.
  */
 
-public class
-FragmentIncomingInv extends Fragment {
+public class FragmentIncomingInv extends Fragment {
 
     public FragmentIncomingInv() {
     }
